@@ -40,16 +40,20 @@ class Server {
     sockets(){
         // Manejo de eventos de conexion y desconexion por socket
         this.io.on('connection',(socketClient) => {
-            console.log('Socket Cliente Conectado:',socketClient.id);
+            // console.log('Socket Cliente Conectado:',socketClient.id);
             
             socketClient.on('disconnect',() => {
-                console.log('Socket Cliente Desconectado:',socketClient.id);
+                // console.log('Socket Cliente Desconectado:',socketClient.id);
             });
             
             // Manejo de evento de recepcion de Mensajes / Payload del cliente
-            socketClient.on('enviar_mensaje', (payload ='') =>{
-                console.log(`Informacion recibida del cliente:`);
-                console.log(payload);
+            socketClient.on('notificar_mensaje', (payload, callback) =>{
+                const id = socketClient.id
+                callback(id);
+                // Notificancion del servidor a todos los clientes               
+                // this.io.emit('notificar_mensaje',payload);
+
+
             });
         });    
     }
