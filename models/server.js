@@ -46,9 +46,10 @@ class Server {
                 console.log('Socket Cliente Desconectado:',socketClient.id);
             });
             
-            // Manejo de evento de recepcion de mensajes del cliente
-            socketClient.on('enviar_mensaje', (msg ='') =>{
-                console.log(`Mensaje recibido del cliente: {${msg}}`);
+            // Manejo de evento de recepcion de Mensajes / Payload del cliente
+            socketClient.on('enviar_mensaje', (payload ='') =>{
+                console.log(`Informacion recibida del cliente:`);
+                console.log(payload);
             });
         });    
     }
