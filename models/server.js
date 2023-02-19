@@ -38,10 +38,19 @@ class Server {
     routes() {}
 
     sockets(){
-        // Manejo de eventos por socket
+        // Manejo de eventos de conexion y desconexion por socket
         this.io.on('connection',(socketClient) => {
             console.log('Socket Cliente Conectado:',socketClient.id);
-        });
+            
+            socketClient.on('disconnect',() => {
+                console.log('Socket Cliente Desconectado:',socketClient.id);
+            });
+            
+            // Manejo de evento de recepcion de mensajes del cliente
+            socketClient.on('enviar_mensaje', (msg ='') =>{
+                console.log(`Mensaje recibido del cliente: {${msg}}`);
+            });
+        });    
     }
 
     listen() {
