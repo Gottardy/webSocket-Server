@@ -24,7 +24,12 @@ socketClient.on('disconnect', ()=>{
 // listener del boton enviar mensaje
 btnEnviarMensaje.addEventListener('click', ()=>{
     const msg = txtMensaje.value;
-    // Emitir el evento al servidor
-    socketClient.emit('enviar_mensaje', msg);
+    // Emitir el evento al servidor por medio de un payload
+    const payload = {
+        msg,
+        id: '1234',
+        fecha: new Date().getTime()
+    }
+    socketClient.emit('enviar_mensaje', payload);
  
 });
