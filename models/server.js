@@ -19,6 +19,10 @@ class Server {
 
         // Rutas de mi aplicación
         this.routes();
+
+        // Eventos de sockets
+        this.sockets();
+
     }
 
     middlewares() {
@@ -32,6 +36,13 @@ class Server {
     }
 
     routes() {}
+
+    sockets(){
+        // Manejo de eventos por socket
+        this.io.on('connection',(socketClient) => {
+            console.log('Socket Cliente Conectado:',socketClient.id);
+        });
+    }
 
     listen() {
         this.server.listen( this.port, () => {
