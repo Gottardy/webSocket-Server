@@ -2,6 +2,8 @@ console.log('servidor corriendo');
 // Referencias del HTML
 const lblOnline = document.querySelector('#lblOnline');
 const lblOffline = document.querySelector('#lblOffline');
+const txtMensaje = document.querySelector('#txtMensaje')
+const btnEnviarMensaje = document.querySelector('#btnEnviarMensaje')
 
 // Socket ciente que usa la app web
 const socketClient = io();
@@ -18,3 +20,11 @@ socketClient.on('disconnect', ()=>{
     lblOnline.style.display = 'none';
     lblOffline.style.display = ''; 
 })
+
+// listener del boton enviar mensaje
+btnEnviarMensaje.addEventListener('click', ()=>{
+    const msg = txtMensaje.value;
+    // Emitir el evento al servidor
+    socketClient.emit('enviar_mensaje', msg);
+ 
+});
