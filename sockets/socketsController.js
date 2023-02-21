@@ -7,6 +7,8 @@ const socketsController = (socketClient) => {
     
     socketClient.emit('ultimo_ticket',ticketControl.ultimo);
 
+    socketClient.emit('estado_actual',ticketControl.ultimos4)
+
     socketClient.on('disconnect',() => {
         console.log('Socket Cliente Desconectado:',socketClient.id);
     });
@@ -23,23 +25,31 @@ const socketsController = (socketClient) => {
     });
 
     socketClient.on('atender_ticket',({escritorio}, callback)=>{
+
         if (!escritorio) {
             return callback({
                 ok: false,
                 msg: 'El escritorio es obligtorio'
             });
         }
+        
         const ticket = ticketControl.attendTicket(escritorio);
-        if (!ticket) {
+        
+        // Notificar cambio de los ultimos4 a todos los clientes/escritorios
+        socketClient.broadcast.emit('estado_actual',ticketControl.ultimos4)
+        
+        const encola = ticketControl.tickets.length;
+        if (!ticket||ticket===null) {
             callback({
                 ok: false,
-                msg: 'Ya no hay más tickets'
+                msg: 'Ninguno, no hay Tickets en espera'
             });
         }else{
             callback({
                 ok: true,
                 msg:'Hay tickets por atender',
-                ticket
+                ticket,
+                encola
             });
         }
     })

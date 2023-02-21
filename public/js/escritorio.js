@@ -38,7 +38,7 @@ socketClient.on('notificar_mensaje', (payload)=>{
 })
 
 // Listener del ultimo ticket de la lista y mostrarlo
-socketClient.on('ultimo_ticket', (ultimo)=>{
+socketClient.on('tickets_enCola', (encola)=>{
     // console.log(payload)
     // (ultimo>0)? lblNuevoTicket.innerHTML='Ticket '+ultimo : lblNuevoTicket.innerHTML='Ticket 0';
 })
@@ -46,17 +46,14 @@ socketClient.on('ultimo_ticket', (ultimo)=>{
 // listener del boton enviar mensaje
 btnAtenderTicket.addEventListener('click', ()=>{
     
-    // socketClient.emit('notificar_mensaje', null, (ticket)=>{
-    //     console.log('Notificcion del server para el nuevo',ticket);
-    //     lblNuevoTicket.innerHTML=ticket;
-    // });
-    socketClient.emit('atender_ticket', {escritorio}, ({ok, msg, ticket})=>{
+    socketClient.emit('atender_ticket', {escritorio}, ({ok, msg, ticket, encola})=>{
         if (!ok) {
-            lblTicket.innerText='Nadie, no hay Tickets en espera';
+            lblTicket.innerText=msg;
             return divAlerta.style.display = '';
         }
         console.log(ticket)
         lblTicket.innerText='Ticket '+ticket.numero;
+        lblPendientes.innerText=encola;
         
     });
  
