@@ -66,10 +66,10 @@ class TicketControl {
             return null
         }
         // Sacamos el primer registro de la cola de tickets que sera atendido
-        const ticket =  this.tickets.shift();
+        const ticket = this.tickets.shift();
         ticket.escritorio=escritorio;
         this.ultimos4.unshift(ticket);
-        if(this.ultimos4 > 4){
+        if(this.ultimos4.length > 4){
             this.ultimos4.splice(-1,1);
         }
 
