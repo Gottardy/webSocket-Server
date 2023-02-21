@@ -25,8 +25,8 @@ socketClient.on('notificar_mensaje', (payload)=>{
 
 // Listener del ultimo ticket de la lista y mostrarlo
 socketClient.on('ultimo_ticket', (ultimo)=>{
-    // console.log(payload)
-    (ultimo>0)? lblNuevoTicket.innerHTML='Ticket '+ultimo : lblNuevoTicket.innerHTML='Ticket 0';
+    // console.log(payload) 
+    (ultimo>0)? lblNuevoTicket.innerText='Ticket '+ultimo : lblNuevoTicket.innerText='Ticket 0';
 })
 
 // listener del boton enviar mensaje
@@ -34,7 +34,6 @@ btnEnviarNuevoTicket.addEventListener('click', ()=>{
     
     socketClient.emit('notificar_mensaje', null, (ticket)=>{
         console.log('Notificcion del server para el nuevo',ticket);
-        lblNuevoTicket.innerHTML=ticket;
-    });
- 
+        lblNuevoTicket.innerText=ticket;
+    }); 
 });

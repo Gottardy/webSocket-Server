@@ -39,8 +39,12 @@ socketClient.on('notificar_mensaje', (payload)=>{
 
 // Listener del ultimo ticket de la lista y mostrarlo
 socketClient.on('tickets_enCola', (encola)=>{
-    // console.log(payload)
-    // (ultimo>0)? lblNuevoTicket.innerHTML='Ticket '+ultimo : lblNuevoTicket.innerHTML='Ticket 0';
+    if(encola===0) {
+        lblPendientes.style.display='none';
+    }else{
+        lblPendientes.style.display='';
+        lblPendientes.innerText=encola;
+    }   
 })
 
 // listener del boton enviar mensaje
@@ -54,7 +58,9 @@ btnAtenderTicket.addEventListener('click', ()=>{
         console.log(ticket)
         lblTicket.innerText='Ticket '+ticket.numero;
         lblPendientes.innerText=encola;
-        
+          
     });
+
+    
  
 });

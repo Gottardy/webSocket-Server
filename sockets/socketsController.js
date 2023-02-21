@@ -3,11 +3,11 @@ const TicketControl = require('../models/ticket-control');
 const ticketControl = new TicketControl();
 
 const socketsController = (socketClient) => {
-    console.log('Socket Cliente Conectado:',socketClient.id);
-    
+    // Cuando un nuevo cliente se conecta
+    console.log('Socket Cliente Conectado:',socketClient.id);    
     socketClient.emit('ultimo_ticket',ticketControl.ultimo);
-
     socketClient.emit('estado_actual',ticketControl.ultimos4)
+    socketClient.broadcast.emit('tickets_enCola',ticketControl.tickets.length);
 
     socketClient.on('disconnect',() => {
         console.log('Socket Cliente Desconectado:',socketClient.id);
@@ -19,10 +19,11 @@ const socketsController = (socketClient) => {
         const siguienteTicket = ticketControl.nextTicket();
         callback(siguienteTicket);
         // Notificancion del servidor a todos los clientes utilizando broadcast
-        socketClient.broadcast.emit('notificar_mensaje',payload);
-
-
+        socketClient.broadcast.emit('notificar_mensaje',siguienteTicket);
+        socketClient.broadcast.emit('tickets_enCola',ticketControl.tickets.length);
     });
+
+    
 
     socketClient.on('atender_ticket',({escritorio}, callback)=>{
 
@@ -37,8 +38,9 @@ const socketsController = (socketClient) => {
         
         // Notificar cambio de los ultimos4 a todos los clientes/escritorios
         socketClient.broadcast.emit('estado_actual',ticketControl.ultimos4)
-        
+        socketClient.broadcast.emit('tickets_enCola',ticketControl.tickets.length);
         const encola = ticketControl.tickets.length;
+        
         if (!ticket||ticket===null) {
             callback({
                 ok: false,
