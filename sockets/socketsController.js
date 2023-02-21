@@ -21,6 +21,28 @@ const socketsController = (socketClient) => {
 
 
     });
+
+    socketClient.on('atender_ticket',({escritorio}, callback)=>{
+        if (!escritorio) {
+            return callback({
+                ok: false,
+                msg: 'El escritorio es obligtorio'
+            });
+        }
+        const ticket = ticketControl.attendTicket(escritorio);
+        if (!ticket) {
+            callback({
+                ok: false,
+                msg: 'Ya no hay más tickets'
+            });
+        }else{
+            callback({
+                ok: true,
+                msg:'Hay tickets por atender',
+                ticket
+            });
+        }
+    })
 }
 
 module.exports ={
